@@ -20,16 +20,6 @@ const customerSchema = new mongoose.Schema({
     email: {
         type: String,
         require: true
-    },
-    username: {
-        type: String,
-        required: true,
-        unique: true,
-        minlength: 6
-    },
-    password: {
-        type: String,
-        require: true
     }
 
 }, { timestamps: true });
