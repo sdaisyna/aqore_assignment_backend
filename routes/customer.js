@@ -10,7 +10,7 @@ router.route("/")
         Customer.find()
             .then(customer => {
                 if (customer == null) throw new Error("No customer found.");
-                res.json(product)
+                res.json(customer)
             })
             .catch(next);
     })

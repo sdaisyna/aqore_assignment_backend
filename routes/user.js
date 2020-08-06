@@ -16,6 +16,9 @@ router.post('/signup', (req, res, next) => {
             throw new Error('Password could not hash ');
         }
         User.create({
+            fullname: req.body.fullname,
+            email: req.body.email,
+            phone: req.body.phone,
             username: req.body.username,
             password: hash
 
@@ -28,11 +31,11 @@ router.post('/signup', (req, res, next) => {
 });
 
 //Routes for user login
-router.get('/login', (req, res, next) => {
+router.post('/login', (req, res, next) => {
     User.findOne({ username: req.body.username })
         .then((user) => {
             if (user == null) {
-                let err = new Error('No user found !');
+                let err = new Error('Sorry! User not found.');
                 err.status = 401;
                 return next(err);
             }
@@ -40,13 +43,13 @@ router.get('/login', (req, res, next) => {
                 bcrypt.compare(req.body.password, user.password)
                     .then((isMatch) => {
                         if (!isMatch) {
-                            let err = new Error('Password does not match. ');
+                            let err = new Error('Password does not match.');
                             err.status = 401;
                             return next(err);
                         }
                         let token = jwt.sign({ _id: user._id }, process.env.SECRET);
-                        res.json({ status: 'Login successful !', token: token });
-
+                        res.json({ status: 'Login Successful!', token: token });
+                        //console.log("Login Successful!");
                     }).catch(next);
             }
         }).catch(next);

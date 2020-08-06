@@ -25,8 +25,13 @@ router.route("/")
     })
 
     .post((req, res, next) => {
-        res.statusCode = 405;
-        res.json({ message: "Method not allowed." });
+        let sales = new SalesTransaction(req.body)
+        sales.save()
+            .then(sales => {
+                res.statusCode = 201;
+                res.json(sales)
+            })
+            .catch(next);
     })
 
     .put((req, res, next) => {
@@ -51,6 +56,9 @@ router.route("/:sid")
             .populate({
                 path: 'product'
             })
+            .populate({
+                path: 'customer'
+            })
             .then(sales => {
                 if (sales == null) throw new Error(" Sales transaction has been removed. ");
                 res.json(sales);
@@ -64,8 +72,35 @@ router.route("/:sid")
         res.json({ message: "Method not allowed." });
     })
 
+    .put((req, res, next) => {
+        SalesTransaction.findOneAndUpdate(
+            { _id: req.params.sid },
+            { $set: req.body },
+            { new: true }
+        )
+            .populate({
+                path: 'product'
+            })
+            .populate({
+                path: 'customer'
+            })
+            .then(reply => {
+                if (reply == null) throw new Error("Sorry, update failed.");
+                res.json(reply);
+            })
+            .catch(next);
+    })
 
-    module.exports = router;
+    .delete((req, res, next) => {
+        SalesTransaction.findOneAndDelete({ _id: req.params.sid })
+            .then(response => {
+                res.json(response);
+            })
+            .catch(next);
+    })
+
+
+module.exports = router;
 
 
 

@@ -7,6 +7,7 @@ const productRouter = require('./routes/product');
 const customerRouter = require('./routes/customer');
 const salesRouter = require('./routes/salestransaction');
 const invoiceRouter = require('./routes/invoice');
+const uploadRouter = require('./routes/uploads');
 
 
 const dotenv = require('dotenv').config();
@@ -37,6 +38,8 @@ app.use('/customer', customerRouter);
 app.use('/product', productRouter);
 app.use('/sales', salesRouter);
 app.use('/invoice', invoiceRouter);
+app.use('/upload', uploadRouter);
+
 
 
 app.use((err, req, res, next) => {

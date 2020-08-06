@@ -9,7 +9,7 @@ const salestransactionSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Customer'
     },
-    qauntity: {
+    quantity: {
         type: String
     },
     sales_date: {
